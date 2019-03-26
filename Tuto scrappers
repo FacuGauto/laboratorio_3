@@ -1,0 +1,138 @@
+1	http://mancu.7puentes.com/ycodeblocdashboard/portal_stats
+2	qty articles
+3	/Proyectos/Illuminati/crawlers/scrappers/illu
+4	Probar xpath de home list details
+	En mancu 			
+		copy row a scrapper.home
+	En local paste row en jobs
+
+	En mancu: (ver observations)-------------------------------------
+		select * from jobs_completed 
+		where portal_id = 576 
+		and  spider_id = 1 
+		and created_at > '2017-10-03' 
+		and scrapper like '%.detail'
+		limit 50 ;
+
+5	En la consola: 	ruby test_scrapper.rb --j (idjobs)
+					primero del .home (genera los .list)
+					segundo de los .list (genera los .detail)
+					tercero de .detail
+
+6	En la consola: ruby launcher.rb -p (id_portal) -s 1 -vd -n
+
+	Si tiene error el .home para correrlo de nuevo se ejecuta el launcher. Borrar el campo de observations (al actualizar no modifica este campo)
+
+
+
+
+
+	SVN Commit ----------------------------------------------
+
+
+			/Proyectos/Illuminati/crawlers/scrappers/illu$
+			svn up scrapper_co_caracol.rb
+			svn st
+			svn diff scrapper_co_caracol.rb
+			svn ci -m "comentarios" scrapper_co_caracol.rb
+			svn st
+
+
+	Implementar en produccion---------------------------------
+
+
+			ssh -p 18456 illuminati@mancu.7puentes.com
+			Illuminati/crawlers/scrappers/illu
+			svn up scrapper_do_almomento.rb
+
+
+	Cambio de ranking----------------------------------------
+
+			validar que el proyectsportal
+
+
+
+
+irb consola ruby
+
+page = get_page_from_url('')
+
+page.at_xpath("")
+
+
+ctrl + p --------------> buscar en sublime
+
+
+
+ranking		recurring_minutes
+225    				60
+200    				90
+175    				120
+150    				240
+
+
+#check jobs
+select * from illuminati.jobs where spider_id = 1 and portal_id = 591;
+
+#check jobs_completed
+select * from illuminati.jobs_completed where spider_id = 1 and portal_id = 591 and created_at > curdate();
+
+#check jobs_completed (ejemplo status 'C')
+select * from illuminati.jobs_completed where spider_id = 1 and status = 'C' order by id desc limit 10;
+
+# jobs home
+select * from illuminati.jobs where spider_id = 1 and scrapper like '%home';
+
+
+ESTADOS-----------------------------
+
+
+Estado de freeling
+
+s ----> ok
+p-----> pendiente
+f-----> fallaron
+
+Jobs complete
+
+c ------> fallo
+s-------> ok
+
+Jobs
+
+p------> pendiente
+e------> ejecucion
+f------> fallo
+
+
+
+xpath -----> devuelve todo lo que machea
+
+at_xpath---> devuelve el primer resultado 
+
+wget https://www.michaelbest.com/Newsroom/Search?search= -----> comprueba la conexion con el sitio 
+
+ruby test_scrapper.rb --proxy T --j 1058624
+
+ruby test_scrapper.rb --proxy H --j 1058624
+
+
+QUERYS------------------
+
+select * from articles a
+where a.url= "http://www.economiaynegocios.cl/noticias/noticias.asp?id=408040";
+
+SELECT * FROM illuminati.jobs
+where portal_id = 544
+and spider_id = 1;
+
+
+ruby launcher.rb -s 3 -p 212 -vdt H 
+
+PORTAL_VALIDATOR.RB
+
+mancu Illuminati/utils
+ruby portal_validator.rb -h
+
+
+ls -l *.ps | grep May

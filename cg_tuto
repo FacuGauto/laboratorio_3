@@ -1,0 +1,96 @@
+
+******************************************************************
+							CG
+******************************************************************
+URL NAVIGATOR 
+
+http://intelligize.7puentes.com/tools/navigator
+
+URL EN UN DETERMINADO SITIO (por ejemplo sitio con id 485)
+
+http://intelligize.7puentes.com/tools/navigator#485
+
+******************************************************************
+
+SCRAPEAR SITIOS (por ejemplo sitio con id 485)
+
+cd /home/batua/Batua/pseudo_scrappers/cg_scrapper/
+bundle exec ruby crawler.rb -v --id 485
+
+* Sin proxys: *
+
+cd /home/batua/Batua/pseudo_scrappers/cg_scrapper/
+bundle exec ruby crawler.rb -v --id 485 --no_proxy
+
+*******************************************************************
+
+CONEXIÓN A BASE EN MONGO (usando robomongo)
+
+host: bilardo.7puentes.com
+puerto: 23848
+tipo: Direct conection
+
+*******************************************************************
+
+QUERY A MONGO PARA TRAER ESTRUCTURA DE UN SITIO (por ejemplo sitio con id 485)
+
+db.getCollection('cg').find({"id":152})
+
+*******************************************************************
+
+BASE SQL INTELLIGIZE
+
+cg_crawler_runs
+
+TODAS LAS CORRIDAS DEL SCRAPPER:
+
+run_type="all" es la corrida automatica de cada día
+
+Maximo id de crawler run (última corrida automatica)
+
+SELECT max(id) FROM intelligize.cg_crawler_runs WHERE run_type="all";
+
+Ultimos errores de todas las companys
+
+SELECT company_id, count(*) as c
+FROM intelligize.cg_crawler_run_errors 
+WHERE severity = 'ERROR'
+AND NOT company_id IN (lista id companias) 
+AND crawler_run_id = max_id_craler_run
+group by company_id
+ORDER BY c desc;
+
+*******************************************************************
+
+ARCHIVOS O CONTENIDO QUE NOS INTERESA
+
+Board of directors *
+Leadership
+Corporate Officers
+Executives	
+
+ByLaws / By-Laws *
+
+Certificate of incorporation
+
+Board committees composition
+
+Committes Charters *
+
+Standars (todos los que haya)
+
+Code of Business Conduct and Ethics
+
+Code of conduct *
+
+Corporate Governance Principles
+
+Policys
+
+
+ssh developer@pekerman
+
+developer@pekerman:~/Batua/pseudo_scrappers/cg_scrapper$ ruby url_issues_loader.rb -vd
+
+
+curl -x socks5://localhost:9054 http://ir.charter.com/phoenix.zhtml?c=112298&p=irol-govmanage

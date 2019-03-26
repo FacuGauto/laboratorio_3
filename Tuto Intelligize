@@ -1,0 +1,331 @@
+bilardo: ssh -p 18456 batua@bilardo.7puentes.com
+pekerman: ssh developer@pekerman  / developer
+mancu: ssh -p 18456 illuminati@mancu.7puentes.com /oycobe
+	LOCAL
+
+ctrl z => detiene
+ctrl c => mata	
+ps
+sudo kill -9 12985
+
+En el proyecto illuminati los scrappers estan en:
+Illuminati/crawlers/scrappers/igzfm
+
+Y cada uno se identifica con su nombre e igz_page_id
+Por ejemplo:
+Nombre: pepito
+igz_page_id = 11
+
+El nombre del archivo será: igz_pepito11_m.rb
+-
+--------------------------------------------------------------------
+
+Conectarse a BILARDO
+ssh -p 18456 batua@bilardo.7puentes.com
+Contraseña: oycobe
+generar alias : nano ~/.bashrc
+alias bilardo='ssh -p 18456 batua@bilardo.7puentes.com'
+alias pekerman='ssh developer@pekerman'
+alias mancu='ssh -p 18456 illuminati@mancu.7puentes.com'
+source ~/.bashrc
+---------------------------------------------------------------------
+PROBAR COSAS EN PRODUCCIÓN
+
+# svn up
+* OJO Siempre solo del archivo que modifique *
+cd /home/batua/Illuminati/crawlers
+svn up /scrappers/igzfm/igz_nombreID_m.rb
+
+
+# Generate jobs (actualiza los memos)
+(Antes eliminar los jobs de list menos el primero)
+cd /home/batua/Illuminati/crawlers
+
+bundle exec ruby process_portal.rb -p 286 -vdt T -g 66971401	
+
+bundle exec ruby process_portal.rb test -p 253 -vdt H -f 66390194
+
+bundle exec ruby process_portal.rb -p 272 --generate 108219314 -vd
+								  portal_id 		  job_id	
+***********************
+bundle exec ruby process_portal.rb test -vdp #{portal_id} -og #{first_page_job_id} **	
+bundle exec ruby process_portal.rb test -vdp #{portal_id} -of #{first_page_job_id} **
+bundle exec ruby process_portal.rb -p 272 -f 1058566 -vd
+
+bundle exec ruby process_portal.rb test -vdp #{portal_id} -og #{first_page_job_id} **
+test_scrapper.rb --proxy H --j 184254218
+
+bundle exec ruby process_portal.rb test -vdt H -p 524 -g 152950283
+
+***********************
+
+# Testear por job 
+cd /home/batua/Illuminati/crawlers
+JOB
+ruby test_scrapper.rb --j 112340011
+						  job_id
+JOB COMPLETE
+ruby test_scrapper.rb --jc 112340011
+						 job_completed_id
+MEMO
+ruby test_scrapper.rb --m 112340011
+						  memo_id
+
+---------------------------------------------------------------------
+QUERYS .
+
+
+Siguiendo con el ejemplo anterior:
+Nombre: pepito
+igz_page_id = 11
+portal_id = 520 (esto lo sacan del campo portal_id del job de list)
+
+.............................
+JOB DE LIST:
+
+SELECT * FROM illuminati.jobs
+WHERE scrapper LIKE "%pepito11%list";
+
+.............................
+JOBS DE DETAIL Y TEXT (PDF):
+
+SELECT * FROM illuminati.jobs 
+WHERE (scrapper LIKE "%pepito11%detail%"  OR scrapper LIKE "%pepito11%text%") ;
+
+.............................
+COMPLETED JOBS DE DETAIL Y TEXT (PDF):
+
+SELECT * FROM illuminati.jobs_completed 
+WHERE portal_id=520 AND spider_id=3 
+AND (scrapper LIKE "%pepito11%detail%"  OR  scrapper LIKE "%pepito11%url%" OR scrapper LIKE "%pepito11%text%") 
+order by id desc limit 5000;
+
+.............................
+MEMOS:
+
+SELECT * FROM intelligize.memos 
+WHERE igz_page_id = 11 AND action <> 'Deleted' 
+ORDER  BY normalized_date DESC;
+
+
+history | grep bilardo
+
+svn up scrappers/igzfm/igz_thompsonhine261_m.rb
+
+PASAR SITIO DE PROD A STAGING / READY / PRODUCTION (desde bilardo) 
+cd /home/batua/Illuminati/utils/
+ºbundle exec ruby igz_page_deployment.rb --h
+
+# Borrar memos LOCAL (cambiar action a 'deleted')
+cd Intelligize/scripts
+touch ../model/list_page_reload.token
+bundle exec ruby memos_eraser.rb -v
+insertar condición
+
+Cambiar en produccion directo desde el workbench
+##UPDATE `intelligize`.`memos` SET `action`='Updated', updated_at = utc_timestamp() WHERE `action`='facu'
+##and igz_page_id = 261 ;
+
+****Los jobs de list corren y verifican todos los memos
+	Puede que todos los memos esten la tabla memos pero que no esten actualizados si en la jobs_completed hay .text o .detail en status c
+
+
+
+************************
+SELECT facu.id, facu.url
+FROM
+	(SELECT *
+	FROM intelligize.memos
+	WHERE igz_page_id = 261
+	AND action = 'facu') as facu
+    LEFT JOIN
+	(SELECT *
+	FROM intelligize.memos
+	WHERE igz_page_id = 261
+	AND action != 'facu') as not_facu ON facu.title = not_facu.title
+WHERE not_facu.id IS NULL;
+************************
+
+
+******************
+cambiar de action
+UPDATE `intelligize`.`memos` SET `action`='facu' WHERE `action`='Updated'
+AND igz_page_id = 261;
+*****************
+
+
+
+*********************************
+Correr todos los jobs complete
+
+SELECT id FROM illuminati.jobs_completed
+WHERE portal_id=277
+AND spider_id=3
+AND (scrapper LIKE "%gtlaw%detail" OR scrapper LIKE "%gtlaw%url%" OR scrapper LIKE "%gtlaw%text%")
+AND NOT observations = ""
+AND NOT observations = 'Test scrapper success'
+and created_at > '2017-11-09 14:00:00'
+AND params like "%368%"
+ORDER BY id DESC LIMIT 5000;
+
+	* Exportas el resultado de la query a un documento .csv
+	* Seleccionas todo con Ctrl + A
+	* Agregas punteros con Ctrl + Shift + L
+	* Pegas el comando delante de los ids
+
+
+******Conexion a la base desde la consola
+
+	mysql -u batua -p illuminati
+
+*******************************************
+parar proyectos crawlers stopall.sh
+
+iniciar proyectos crawlers startall.sh
+
+/crawlers ./startall.sh (levanta todos los procesos)
+
+bundle exec ruby process_portal.rb test -vdp 325 -f 65726708
+
+*********
+spider 15
+launcher
+psgr|grep launcher
+ruby launcher.rb facu_gtlaw -s 3 -t H -c 'us_kirkland127.detail' -v
+
+ruby launcher.rb meli_luiza -s 17 -t H -c 'meli_ar_fravega.detail' -v
+launcher.rb facu_dwt -o -s 15 -t H -c 'us_dwt54.%' -v
+
+ ruby launcher.rb meli-adidas -s 16 -t H -c %.list
+ ruby launcher.rb meli-luiza -s 17 -t H -c %.detail -v
+
+
+us_goodwinprocter285.text
+*********************************
+parar y levantar launcher de fm
+batua@bilardo: ~/Illuminati/crawlers/work/igzfm$ touch stop.token
+psgl fm
+
+./start_spider.sh 
+ 
+ ******
+ MELI
+
+ parar spider
+ sosp ml
+ psgl ml
+ start spider
+  stsp ml
+*********************************
+
+
+mechanize con headers*******************
+
+require 'mechanize'
+
+agent = Mechanize.new
+
+agent.request_headers = {'Content-Type' => "application/json"}
+
+page = agent.get("https://www.duanemorris.com/resources/data/publicationlistings_CLA.json")
+page = agent.get("https://www.tklaw.com/ajax/pubs.asmx")
+
+
+********************************
+paginas con javascript se crean pagina bilardo.com
+se agrega sitio en:
+batua/js_scrapper/run_js_scrapper.sh
+se corre la linea del sitio particular y se crea la primer pagina en:
+batua/js_scrapper/public/files
+
+ScrapperHtmlWithJS ---------------> para tarer la pagina con los script --> finnegahenderson296
+
+Agregar nuevo scrapper----------------------
+
+agregar sitio en tabla illuminati.portals y en spider_portals
+
+
+Probar en irb un post-------
+*Agregar al codigo para probar xpath en irb
+
+	def post_page_from_url(url, params, headers = {})
+
+		$agent.user_agent_alias = Mechanize::AGENT_ALIASES.keys.sample
+
+		return $agent.post(url, params, headers)
+
+	end
+
+
+*********************************************** 
+/Proyectos/Intelligize/scripts$ bundle exec irb
+irb(main):001:0> require '../model/model'
+ IGZMemo
+ IGZMemo.find(592119)
+ memo = IGZMemo.find(592119)
+ memo.normalized_date
+ memo.normalized_date = nil
+ memo.save!
+ memo.normalized_date = '2018-07-01'
+ memo.save!
+ IGZMemoVersion.find(4945549)
+ IGZMemoVersion.find(4945549).attributes
+************************************************
+
+
+**********************************************
+# quarter 2.0
+    when /^Quarter ([1-4]) (\d{4})$/i
+      quarter = $1
+      d = DateTime.strptime("#{year} #{(quarter.to_i-1)*3+1}", "%Y %m")
+
+s = "Quarter 3 2016"
+=> "Quarter 3 2016"
+irb(main):006:0> s =~ /^Quarter ([1-4]) (\d{4})$/i
+=> 0
+irb(main):007:0> $2
+=> "2016"
+irb(main):008:0> $1
+=> "3"
+
+*********************************************
+
+xpath firefox -->  $x("")
+
+$x("")
+********************************************
+
+1-pasar sitio a staging
+2-comentar memo.changed
+3-memos a processing
+4-correr process_portal.rb
+5-memos_eraser.rb
+6-descomentar memo.changed
+
+sql explain
+
+mysql -u batua -poycobe illuminati
+
+http://bilardo.7puentes.com/resources/obtain/html/intelligize/268/first_page
+
+/MeLiDataExt/scripts$ bundle exec ruby push_to_s3.rb
+
+bundle exec ruby -v push_to_s3.rb
+
+
+url repetidas venable 268
+
+------------------------------------------------------------------
+----------curl - post---------------------------------------------
+curl -H 'Content-Type: application/json; charset=UTF-8' -d '{"idMenu":"16","paginaActual":"2","familiasBuscadas":"226,227,228,250,208,225,251,252,253,254,","filtroCategorias":"","filtroGeneros":"","filtroPlataformas":"","filtroMarcas":"","filtroPrestadoras":"","filtroPrecios":"","filtroOfertas":"0","palabraBuscada":"","menorPrecioMultiploDe10":"6290","intervaloPrecios":"10195","tipoListado":"Grilla","orden":"0","productosBuscados":"","filtroCuotas":"","NroBoca":0}' https://www.megatone.net/Listado.aspx/CargarMas
+------------------------------------------------------------------
+------------------------------------------------------------------
+
+
+curl -H 'Content-Type: application/json; charset=UTF-8' -d '{"idMenu":"16","paginaActual":"2","familiasBuscadas":"226,227,228,250,208,225,251,252,253,254,","filtroCategorias":"","filtroGeneros":"","filtroPlataformas":"","filtroMarcas":"","filtroPrestadoras":"","filtroPrecios":"","filtroOfertas":"0","palabraBuscada":"","menorPrecioMultiploDe10":"6290","intervaloPrecios":"10195","tipoListado":"Grilla","orden":"0","productosBuscados":"","filtroCuotas":"","NroBoca":0}' https://www.megatone.net/Listado.aspx/CargarMas
+
+
+
+grep 'puts' *.rb | awk '{print $1}' | uniq
+
+grep 'p "' *
