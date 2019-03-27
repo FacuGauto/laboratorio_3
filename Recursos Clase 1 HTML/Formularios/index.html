@@ -9,10 +9,39 @@
 <body>
     <h1>Formularios</h1>
     <form id="frm1" action="#" method="get">
-        <p><label for="txtNombre">Nombre: </label>
-        <input type="text" name="nombre" id="txtNombre"></p> 
-        <p><label for="txtClave"Clave: >Clave: </label>
-        <input type="password" id="txtClave" name="password"></p>
+        <fieldset>
+            <legend>Datos Pesonales</legend>
+            <p><label for="txtNombre">Nombre: </label>
+                <input type="text" name="nombre" id="txtNombre" placeholder="Ingrese su nombre" required></p> 
+                <p><label for="txtClave">Clave: </label>
+                <input type="password" id="txtClave" name="password" placeholder="Ingrese su clave" required></p>
+        </fieldset>
+        <p><label for="txtEmail">Email: </label>
+        <input type="email" id="txtEmail" name="email" placeholder="Ingrese su email" required></p>
+        <p><label for="txtEdad">Edad: </label>
+            <input type="number" id="txtEdad" name="edad" placeholder="Ingrese su edad" min="1" max="10" value="5" required></p>
+        <select name="" id="">
+            <optgroup label="lenguajes 1">
+                    <option value="0">C#</option>
+                    <option value="1">Java</option>    
+            </optgroup>
+            <optgroup label="lenguajes 2">
+                    <option value="2">Javascript</option>
+                    <option value="3">C</option>
+            </optgroup>
+        </select>
+
+        <fieldset disabled="disabled">
+            <legend>Sexo:</legend>
+            <label><input type="radio" name="sexo" value="M">Masculino</label>
+            <label><input type="radio" name="sexo" value="F">Femenino</label>
+        </fieldset>
+        <br><br>
+        <label for="comentarios"></label><br>
+        <p><mark>Esto esta resaltado</mark></p>
+        <textarea name="comentarios" id="" cols="30" rows="10"></textarea>
+
+        <p>E = m<sup>2</sub></p>
         <input type="submit">
         <input type="reset">
         
@@ -30,11 +59,6 @@
 
 
     </script>
-    
-
-
-
-
 
 </body>
 </html>
