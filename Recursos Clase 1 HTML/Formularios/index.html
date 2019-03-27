@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+    <h1>Formularios</h1>
+    <form id="frm1" action="#" method="get">
+        <p><label for="txtNombre">Nombre: </label>
+        <input type="text" name="nombre" id="txtNombre"></p> 
+        <p><label for="txtClave"Clave: >Clave: </label>
+        <input type="password" id="txtClave" name="password"></p>
+        <input type="submit">
+        <input type="reset">
+        
+    </form>
+
+    <script>
+        var txtNombre = document.getElementById('txtNombre');
+
+        var frm = document.getElementById('frm1');
+
+        frm.addEventListener('submit',function(e){ //('submit',(e)=>{}
+            e.preventDefault();
+            alert("Maneje el submit");
+        });
+
+
+    </script>
+    
+
+
+
+
+
+</body>
+</html>
