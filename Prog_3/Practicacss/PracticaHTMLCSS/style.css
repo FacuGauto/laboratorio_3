@@ -1,0 +1,9 @@
+#minav{
+    background-color: rosybrown;
+}
+
+.lista li{
+    display: inline;
+    padding-left:3px;
+    padding-right:3px;  
+}
