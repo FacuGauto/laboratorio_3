@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+    <h2>FrontEnd</h2>
+    <ul>
+        <li>HTML</li>
+        <li>CSS</li>
+        <li>JAVASCRIPT</li>
+    </ul>
+    <button id="btnEjecutar">Ejecutar</button>
+    <script>
+        let btn = document.getElementById('btnEjecutar');
+        btn.addEventListener('click',ejecutar);
+
+        function ejecutar(){
+            let lista = document.getElementsByTagName('ul')[0];
+            let hijos = lista.children;
+
+            for (var index = 0; index < hijos.length; index++) {
+                //var elemento = hijos[index];
+                console.log(hijos[index].textContent);
+                
+            }
+
+
+
+            //  console.log(lista.childNodes.length);
+        }
+    </script>
+</body>
+</html>

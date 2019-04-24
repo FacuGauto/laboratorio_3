@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+    <h2>FrontEnd</h2>
+    <div id="miDiv">
+
+    </div>
+    <p id="p1"></p>
+    <button id="btnEjecutar">Ejecutar</button>
+    <script>
+        let btn = document.getElementById('btnEjecutar');
+        btn.addEventListener('click',ejecutar);
+
+        function ejecutar(){ 
+           var div = document.getElementById('miDiv');
+           var parrafo = document.createElement('p');
+           var texto = document.createTextNode('3-1');
+           /*var img = document.createElement('img');
+           img.setAttribute('src','./images/koala.jpg');
+           img.setAttribute('')*/
+           var img = document.querySelector('#imagen1');
+
+           if (img.hasAttribute('src')) {
+               img.removeAttribute('src');
+           }
+           else{
+               console.log('No tiene ese atributo');
+           }
+           parrafo.appendChild(texto);
+           div.appendChild(parrafo);
+           var parrafo = document.getElementById('p1');
+           var nodoTexto = document.createTextNode('Hola Mundo');
+
+           parrafo.appendChild(nodoTexto);
+
+        }
+    </script>
+</body>
+</html>
