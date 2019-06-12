@@ -2,7 +2,11 @@
 
 console.log(a);*/
 
-
+// namespace ---> /// <reference path=""/>
+/*
+namespace
+export class
+*/
 class Persona{
     private _nombre:string;
     private _apellido:string;
