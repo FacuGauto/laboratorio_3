@@ -17,20 +17,27 @@
         {
             alert(num1+num2);
         }
+        function mostrar(){
+            alert("FUNCION MOSTRAR");
+            var imputUsr = document.getElementById("usr");
+            var imputPass = document.getElementById("pass");
+            console.log(imputUsr.value);
+            console.log(imputPass.value);
+        }
     </script>
 </head>
 <body>
-    <form action="" method="get">
+    <!--<form action="" method="get">-->
         <label>Usuario:</label><br>
-        <input type="text">
+        <input type="text" id="usr">
         <br><br>
         <label>Contraseña:</label><br>
-        <input type="password">
+        <input type="password" id="pass">
         <br><br>
         <input type="checkbox" name="op1" value="0" checked> <label>Recordar usar y contraseña</label>
         <br><br> 
-        <input type="submit" value="Enviar">
+        <input type="button" value="Enviar" onclick="mostrar()">
         <input type="reset" value="Limpiar">
-    </form>
+    <!-- </form> -->
 </body>
 </html>
