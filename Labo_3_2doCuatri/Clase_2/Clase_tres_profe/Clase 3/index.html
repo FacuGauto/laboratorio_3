@@ -11,7 +11,7 @@
 </head>
 
 <body>
-    <div class="container">
+   <div class="container" id="menu" hidden>
         <label for="name" id="lblName">Nombre</label>
         <input type="text" placeholder="Tu nombre" id="name" maxlength="25">
         <label for="surname" id="lblSurname">Apellido</label>
@@ -19,6 +19,7 @@
         <input type="button" name="save" value="Guardar" id="save" class="button" onclick="save()">
     </div>
     <br>
+    <input type="button" name="menu" value="Agregar" id="add" class="button" onclick="add()">
     <h2>Lista de personas</h2>
     <div>
         <table border="3" id="table" class="table">

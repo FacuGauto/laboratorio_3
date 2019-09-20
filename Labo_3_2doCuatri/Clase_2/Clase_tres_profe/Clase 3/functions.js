@@ -1,5 +1,4 @@
 function save(){
-console.log("AADADAD");
     var name = document.getElementById('name').value;
     var surname = document.getElementById('surname').value;
 
@@ -32,3 +31,15 @@ function editar(e){
 /*document.getElementById("dato").className="error";
 document.getElementById("otroDato").className="error";
 alert("el campo no puede estar vacio");*/
+function add(){
+    document.getElementById('menu').removeAttribute('hidden');
+}
+let menu = `
+    <div class="container">
+        <label for="name" id="lblName">Nombre</label>
+        <input type="text" placeholder="Tu nombre" id="name" maxlength="25">
+        <label for="surname" id="lblSurname">Apellido</label>
+        <input type="text" placeholder="Tu apellido" id="surname" maxlength="10">
+        <input type="button" name="save" value="Guardar" id="save" class="button" onclick="save()">
+    </div>
+`
